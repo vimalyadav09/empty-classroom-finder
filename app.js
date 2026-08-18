@@ -25,7 +25,9 @@ slotSelect.addEventListener('change', renderRooms); refreshButton.addEventListen
 /** Opens one real-time listener; Firebase pushes later timetable changes automatically. */
 function connectToTimetable() {
   stopListening?.(); clearTimeout(connectionTimer); setStatus('loading', 'Connecting to timetable…'); blockSelect.disabled = true; daySelect.disabled = true; slotSelect.disabled = true;
-  const root = database.ref();
+  // Read the allowed timetable node directly. Realtime Database rules do not
+  // grant a parent-node read merely because a child node is readable.
+  const root = database.ref('timetable');
   const onData = snapshot => {
     clearTimeout(connectionTimer);
     timetable = getTimetableRoot(snapshot.val()); const rooms = Object.keys(timetable);
@@ -42,8 +44,8 @@ function connectToTimetable() {
   }, 15000);
 }
 
-/** Accepts either /timetable/{room}/... or the room map directly at the database root. */
-function getTimetableRoot(data) { if (!data || typeof data !== 'object') return {}; return data.timetable && typeof data.timetable === 'object' ? data.timetable : data; }
+/** The listener already reads /timetable, so its value is the classroom map. */
+function getTimetableRoot(data) { return data && typeof data === 'object' ? data : {}; }
 function getBlock(room) { return room.match(/-B(\d+)$/i)?.[1] || 'Other'; }
 function populateBlocks(rooms) {
   const blocks = [...new Set(rooms.map(getBlock))].sort(numericSort);
