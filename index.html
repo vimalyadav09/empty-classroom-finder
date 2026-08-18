@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Empty Classroom Finder</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="hero">
+        <p class="eyebrow">Live campus utility</p>
+        <h1>Empty Classroom Finder</h1>
+        <p class="intro">Find classrooms that are free from the live college timetable.</p>
+      </section>
+      <section class="card" aria-labelledby="finder-title">
+        <div class="card-heading">
+          <div><h2 id="finder-title">Find a room</h2><p id="connectionStatus" class="status loading">Connecting to timetable…</p></div>
+          <button id="refreshButton" class="secondary" type="button">Refresh</button>
+        </div>
+        <div class="filters">
+          <label>Block <select id="blockSelect" disabled></select></label>
+          <label>Day <select id="daySelect" disabled></select></label>
+          <label>Slot <select id="slotSelect" disabled></select></label>
+        </div>
+      </section>
+      <section class="card results" aria-live="polite">
+        <div class="result-heading"><div><h2>Available classrooms</h2><p id="summary">Loading timetable…</p></div><span id="freeCount" class="count">–</span></div>
+        <div id="roomList" class="room-list"><p class="empty">Please wait while the live data loads.</p></div>
+      </section>
+    </main>
+    <!-- Classic Firebase builds also work when this page is opened as a local file. -->
+    <script src="https://www.gstatic.com/firebasejs/12.17.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.17.1/firebase-database-compat.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
